@@ -25,31 +25,90 @@ const Carrera = sequelize.define("carrera", {
 const Curso = sequelize.define("curso", {
     id : {
         primaryKey : true,
-        type: DataTypes.UUID,
+        type : DataTypes.UUID,
         defaultValue : Sequelize.UUIDV4
     },
-    nombre :{
+    nombre : {
         type : DataTypes.STRING(150),
-        allowNull:false
+        allowNull : false
     },
-    carrera_id :{
+    carrera_id : {
         type : DataTypes.UUID,
-        allowNull:true 
+        allowNull : true
     }
-},{
+}, {
     timestamps : false,
     freezeTableName : true
 })
 
-//Relaciones
+const Evaluacion = sequelize.define("evaluacion", {
+    id : {
+        primaryKey : true,
+        type : DataTypes.UUID,
+        defaultValue : Sequelize.UUIDV4
+    },
+    nombre : {
+        type : DataTypes.STRING(200),
+        allowNull : false
+    },
+    fecha_registro : {
+        type : DataTypes.DATE,
+        allowNull : true
+    },
+    curso_id : {
+        type : DataTypes.UUID,
+        allowNull : false
+    },
+    ciclo_id : {
+        type : DataTypes.UUID,
+        allowNull : false
+    }
+}, {
+    timestamps : false,
+    freezeTableName : true
+})
+
+const Ciclo = sequelize.define("ciclo", {
+    id : {
+        primaryKey : true,
+        type : DataTypes.UUID,
+        defaultValue : Sequelize.UUIDV4
+    },
+    nombre : {
+        type : DataTypes.STRING(200),
+        allowNull : false
+    }
+}, {
+    timestamps : false,
+    freezeTableName : true
+})
+
+
+// Relaciones
 // Curso * <----> 1 Carrera
-Curso.belongsTo(Carrera,{
+Curso.belongsTo(Carrera, {
     foreignKey : "carrera_id"
 })
-Carrera.hasMany(Curso,{
+Carrera.hasMany(Curso, {
+    foreignKey : "id"
+})
+
+// Evaluacion * <----> 1 Curso
+Evaluacion.belongsTo(Curso, {
+    foreignKey : "curso_id"
+})
+Curso.hasMany(Evaluacion, {
+    foreignKey : "id"
+})
+
+// Evaluacion * <----> 1 Ciclo
+Evaluacion.belongsTo(Ciclo, {
+    foreignKey : "ciclo_id"
+})
+Ciclo.hasMany(Evaluacion, {
     foreignKey : "id"
 })
 
 module.exports = {
-    Carrera,Curso
+    Carrera, Curso, Ciclo, Evaluacion
 }
