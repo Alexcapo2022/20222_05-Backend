@@ -79,6 +79,11 @@ app.get("/evaluacion", async (req, resp) => {
         resp.send(listadoEvaluaciones)
     }
 })
+//5: Registro de resolucion de evaluacion
+//Recibir la data en el Cuerpo de la peticion HTTP (POST)
+app.post("/resolucion",(req,resp) => {
+
+})
 
 app.listen(PUERTO, () => {
     console.log(`Servidor web iniciado en puerto ${PUERTO}`)
